@@ -4,13 +4,14 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import driverwrapper.DriverWrapper;
 import driverwrapper.constants.DriverType;
+import driverwrapper.constants.FacebookAddress;
 
 public class DriverSteps {
 
 	private static DriverWrapper driver = new DriverWrapper(DriverType.CHROME);
 	private static String facebookUser = null;
 	private static String facebookPassword = null;
-
+	
 	
 	public String getFacebookUser() {
 		return facebookUser;
@@ -32,9 +33,9 @@ public class DriverSteps {
 		DriverSteps.facebookPassword = facebookPassword;
 	}
 
-	@Given("^I go to \"(.*)\" address$")
-	public void I_go_to_facebook_com_page(String page) throws Throwable {
-		driver.get(page);
+	@Given("^I go to facebook address$")
+	public void I_go_to_facebook_com_page() throws Throwable {
+		driver.get(FacebookAddress.FACEBOOK_ADDRESS);
 	}
 	
 	@Given("^I log in$")
@@ -47,6 +48,10 @@ public class DriverSteps {
 		System.out.println(facebookUser);
 		System.out.println(facebookPassword);
 	}
-
+	
+	@Then("^I get driver cookies$")
+	public void saveCookiesInWrapper(){
+		driver.getCookies();
+	}
 	
 }
