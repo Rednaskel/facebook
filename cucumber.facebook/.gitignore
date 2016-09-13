@@ -1,2 +1,6 @@
 target/*
 src/test/resources/credentials/facebook/credentials.txt
+/target/
+.classpath
+.project
+.settings/*
