@@ -12,6 +12,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import driverwrapper.constants.DriverType;
 import driverwrapper.constants.FacebookAddress;
+import driverwrapper.constants.xpaths.FriendsPage;
 import driverwrapper.constants.xpaths.LoginPageXpaths;
 import driverwrapper.constants.xpaths.MainPage;
 import driverwrapper.waitfactory.WaitFactory;
@@ -64,6 +65,7 @@ public class DriverWrapper {
 		String profilePageAddress = element.getAttribute("href");
 		String friendsPage = profilePageAddress + "friends?source_ref=pb_friends_tl";
 		driver.get(friendsPage);
+		waitFactory.waitForElementToBeVisible(FriendsPage.ALL_NAMES_LINKS);
 	}
 
 	public Set<Cookie> getCookies() {

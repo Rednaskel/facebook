@@ -16,9 +16,15 @@ public class WaitFactory {
 		this.driver = driver;
 	}
 	
-	public WebElement getClickableElement(By xpath){
+	public WebElement getClickableElement(By elementLocator){
 		return new WebDriverWait(driver, SeleniumTimeouts.DEFAULT_TIMEOUT)
-		.until(ExpectedConditions.elementToBeClickable(xpath));
+		.until(ExpectedConditions.elementToBeClickable(elementLocator));
+	}
+
+	public WebElement waitForElementToBeVisible(By elementLocator) {
+		return new WebDriverWait(driver, SeleniumTimeouts.DEFAULT_TIMEOUT)
+				.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
+		
 	}
 	
 }

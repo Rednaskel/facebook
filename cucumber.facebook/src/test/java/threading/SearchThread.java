@@ -8,7 +8,7 @@ public class SearchThread implements Runnable{
 	@Override
 	public void run() {
 		DriverWrapper driver = new DriverWrapper(DriverType.CHROME);
-//		driver
+		driver.goToFriendsPage();
 		
 	}
 
