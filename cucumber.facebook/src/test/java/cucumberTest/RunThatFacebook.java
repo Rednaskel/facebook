@@ -5,8 +5,7 @@ import org.junit.runner.RunWith;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
-import facebooksteps.Steps;
-import gherkin.formatter.model.Step;
+import facebooksteps.DriverSteps;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
@@ -17,8 +16,7 @@ public class RunThatFacebook {
 
 	@AfterClass
 	public static void tearDown(){
-		System.out.println("BUM XXX AFTER");
-		Steps.closeDriver();
+		DriverSteps.closeDriver();
 	}
 	
 }

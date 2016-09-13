@@ -1,6 +1,12 @@
 package facebooksteps;
 
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -9,41 +15,31 @@ import cucumber.api.java.en.Given;
 
 
 public class Steps {
-
-	private static WebDriver driver = null;
 	
-
-	
-	public Steps() {
-		if(driver == null){
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--disable-extensions");
-			System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
-			driver = new ChromeDriver(options);
+		
+	@Given("^I got credentials form file \"(.*)\"$")
+	public void getCredentialsFromFile(String filePathInResources) throws IOException{
+		final String filepath = "src/test/resources/credentials/" +filePathInResources;
+		List<String> fileContent = Files.readAllLines(Paths.get(filepath));
+		for (String line : fileContent) {
+			String parameter = null;
+			try {
+				parameter = line.substring(0, line.indexOf("="));
+			} catch (Exception e) {
+				System.err.println("Credential file has some additional lines");
+			}
+			
+			switch (parameter) {
+			case "username":
+				DriverSteps.setFacebookUser(line.substring(line.indexOf("=") +1));
+				break;
+			case "password":
+				DriverSteps.setFacebookPassword(line.substring(line.indexOf("=") +1));
+			default:
+				break;
+			}
 		}
 	}
-	
-	@Given("^I am logged in$")
-	public void getFacebookLogin(){
-		System.out.println("bumbuasdkalkdoaWWWWWWWWWWWWWw GGGGGGGGGG");
-	}
-	
-	@Given("^I go to \"(.*)\" address$")
-	public void I_go_to_facebook_com_page(String page) throws Throwable {
-		driver.get(page);
-	}
 
-	@Given("^I log in$")
-	public void I_log_in() throws Throwable {
-		
-	}
-
-	public static void closeDriver() {
-		if(driver != null){
-		driver.close();
-		driver.quit();
-		}
-		
-	}
 	
 }
