@@ -10,3 +10,4 @@ And I get friends list
 Scenario: Friend of a Friend
 Given I have cookies
 And I have my friends list
+When I look for second degree friends

@@ -3,15 +3,20 @@ package driverwrapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
-import driverwrapper.constants.DriverType;
 import driverwrapper.constants.FacebookAddress;
+import driverwrapper.constants.enums.DriverType;
 import driverwrapper.constants.xpaths.FriendsPage;
 import driverwrapper.constants.xpaths.LoginPageXpaths;
 import driverwrapper.constants.xpaths.MainPage;
@@ -25,16 +30,44 @@ public class DriverWrapper {
 	private static Set<Cookie> cookies = null;
 	private final int FACEBOOK_LINK_LENGTH_WITH_SLASH = 25;
 	
-	public DriverWrapper(DriverType chrome) {
-		if(System.getProperty("webdriver.chrome.driver") == null){
-			System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chrome/chromedriver.exe");
+	public DriverWrapper(DriverType driverType) {
+		switch (driverType) {
+		case HTMLUNITDRIVER:
+			wrapHTMLUnitDriver();
+			break;
+		case CHROME:
+			wrapChromeDriver();
+			break;
+		case PHANTOMJS:
+			wrapPhantomJS();
+		default:
+			driver.getCurrentUrl(); // to trigger fail if not initialized
 		}
-		driver = new ChromeDriver(getChromeOptions());
 		if(cookies != null){
 			setCookies(driver, cookies);
 		}
 		waitFactory = new WaitFactory(driver);
 		
+	}
+
+	private void wrapPhantomJS() {
+		DesiredCapabilities cap = new DesiredCapabilities();
+		cap.setJavascriptEnabled(true);
+		cap.setCapability("phantomjs.binary.path",
+                        "src/test/resources/drivers/phantomjs/phantomjs.exe");
+		driver = new PhantomJSDriver(cap);
+		
+	}
+
+	private void wrapHTMLUnitDriver() {
+		driver = new HtmlUnitDriver(true);
+	}
+
+	private void wrapChromeDriver() {
+		if(System.getProperty("webdriver.chrome.driver") == null){
+			System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chrome/chromedriver.exe");
+		}
+		driver = new ChromeDriver(getChromeOptions());
 	}
 
 	private ChromeOptions getChromeOptions(){
@@ -70,10 +103,13 @@ public class DriverWrapper {
 	}
 	
 	public void goToFriendsPage(){
+
+		System.out.println(driver.getPageSource());
 		WebElement element = waitFactory.getClickableElement(MainPage.USER_PROFILE_LINK);
 		String profilePageAddress = element.getAttribute("href");
 		String friendsPage = profilePageAddress + "/friends"; 
 		driver.get(friendsPage);
+		System.out.println(driver.getPageSource());
 		waitFactory.waitForElementToBeVisible(FriendsPage.ALL_NAMES_LINKS);
 	}
 
@@ -83,7 +119,7 @@ public class DriverWrapper {
 	}
 	
 	public boolean isCookiePresent(){
-		if(this.cookies == null){
+		if(DriverWrapper.cookies == null){
 			return false;
 		}
 		return true;
@@ -103,7 +139,7 @@ public class DriverWrapper {
 
 			try {
 				Thread.sleep(600);
-				loadingGif = waitFactory.getPresentElement(FriendsPage.LOADING_FRIENDS_GIF_BY);
+				loadingGif = waitFactory.getPresentElement(FriendsPage.LOADING_FRIENDS_GIF_BY, 2);
 			} catch (Exception e) {
 				break;
 			}

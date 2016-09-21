@@ -3,8 +3,9 @@ package facebooksteps;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import driverwrapper.DriverWrapper;
-import driverwrapper.constants.DriverType;
 import driverwrapper.constants.FacebookAddress;
+import driverwrapper.constants.SelectedDriver;
+import driverwrapper.constants.enums.DriverType;
 
 import static org.junit.Assert.fail;
 

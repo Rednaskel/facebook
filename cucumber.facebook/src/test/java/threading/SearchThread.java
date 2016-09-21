@@ -1,7 +1,7 @@
 package threading;
 
 import driverwrapper.DriverWrapper;
-import driverwrapper.constants.DriverType;
+import driverwrapper.constants.SelectedDriver;
 
 public class SearchThread implements Runnable{
 
@@ -13,7 +13,7 @@ public class SearchThread implements Runnable{
 
 	@Override
 	public void run() {
-		DriverWrapper driver = new DriverWrapper(DriverType.CHROME);
+		DriverWrapper driver = new DriverWrapper(SelectedDriver.value);
 		driver.goToFriendsPage();
 		startPerson.setFriendsIds(driver.getAllFriendsIds());
 		driver.close();
