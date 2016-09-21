@@ -6,6 +6,8 @@ import driverwrapper.DriverWrapper;
 import driverwrapper.constants.DriverType;
 import driverwrapper.constants.FacebookAddress;
 
+import static org.junit.Assert.fail;
+
 public class DriverSteps {
 
 	private static DriverWrapper driver = new DriverWrapper(DriverType.CHROME);
@@ -52,6 +54,13 @@ public class DriverSteps {
 	@Then("^I get driver cookies$")
 	public void saveCookiesInWrapper(){
 		driver.getCookies();
+	}
+	
+	@Given("^I have cookies$")
+	public void checkCookiesAreNotNull(){
+		if(!driver.isCookiePresent()){
+			fail("Cookie not present");
+		}
 	}
 	
 }

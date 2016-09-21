@@ -11,19 +11,27 @@ import driverwrapper.constants.SeleniumTimeouts;
 public class WaitFactory {
 
 	private WebDriver driver;
+	private WebDriverWait wait;
 	
 	public WaitFactory(WebDriver driver){
 		this.driver = driver;
+		this.wait = new WebDriverWait(driver, SeleniumTimeouts.DEFAULT_TIMEOUT);
+	}
+	
+	public WebElement getPresentElement(By elementLocator){
+		return wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator));
+	}
+	
+	public WebElement getPresentElement(By elementLocator, int timeout){
+		return new WebDriverWait(driver, timeout).until(ExpectedConditions.presenceOfElementLocated(elementLocator));
 	}
 	
 	public WebElement getClickableElement(By elementLocator){
-		return new WebDriverWait(driver, SeleniumTimeouts.DEFAULT_TIMEOUT)
-		.until(ExpectedConditions.elementToBeClickable(elementLocator));
+		return wait.until(ExpectedConditions.elementToBeClickable(elementLocator));
 	}
 
 	public WebElement waitForElementToBeVisible(By elementLocator) {
-		return new WebDriverWait(driver, SeleniumTimeouts.DEFAULT_TIMEOUT)
-				.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
+		return wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
 		
 	}
 	

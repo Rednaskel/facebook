@@ -5,4 +5,8 @@ Given I got credentials form file "facebook/credentials.txt"
 And I go to facebook address
 And I log in
 Then I get driver cookies
-And create new life
+And I get friends list
+
+Scenario: Friend of a Friend
+Given I have cookies
+And I have my friends list
