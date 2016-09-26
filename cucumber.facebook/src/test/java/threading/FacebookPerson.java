@@ -5,7 +5,7 @@ import java.util.List;
 public class FacebookPerson {
 
 	private FacebookPerson sourceFirend;
-	private List<FacebookPerson> friends;
+	private List<FacebookPerson> friends = null;
 	private String id;
 	private String name;
 	

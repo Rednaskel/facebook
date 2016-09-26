@@ -4,3 +4,4 @@ src/test/resources/credentials/facebook/credentials.txt
 .classpath
 .project
 .settings/*
+phantomjsdriver.log
